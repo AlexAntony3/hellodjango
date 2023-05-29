@@ -17,6 +17,8 @@ import dj_database_url
 if os.path.isfile("env.py"):
     import env
 
+development = "DEVELOPMENT" in os.environ
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,12 +27,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-8v!ckk2xulo0_56a9cvl!f7w6@6v^bzv-1b)=5x#o^cw4ewi4='
-
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-8v!ckk2xulo0_56a9cvl!f7w6@6v^bzv-1b)=5x#o^cw4ewi4=')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = development
 
-ALLOWED_HOSTS = ['antonyal-django-todo-app.herokuapp.com']
+if development:
+    ALLOWED_HOSTS = ['localhost']
+else:
+    ALLOWED_HOSTS = [os.environ.get('HEROKU_HOSTNAME')]
 
 
 # Application definition
